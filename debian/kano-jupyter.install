@@ -1,0 +1,4 @@
+bin/kano-jupyter /usr/bin
+icons /usr/share/kano-jupyter
+config/dashboard/kano-jupyter.app /usr/share/applications
+config/kdesk/kano-jupyter.lnk /usr/share/kano-desktop/kdesk/kdesktop/

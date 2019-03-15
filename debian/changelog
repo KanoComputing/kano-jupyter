@@ -1,0 +1,5 @@
+kano-jupyter (1.0-1) unstable; urgency=low
+
+  * Added initial PoC integration on Kano OS
+
+ -- Team Kano <dev@kano.me>  Thu, 14 Mar 2019 16:09:00 +0100

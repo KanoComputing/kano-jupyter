@@ -1,0 +1,11 @@
+Source: kano-jupyter
+Maintainer: Team Kano <dev@kano.me>
+Section: graphics
+Priority: optional
+Standards-Version: 3.9.4
+Build-Depends: debhelper (>=9.0.0)
+
+Package: kano-jupyter
+Architecture: all
+Depends: ${shlibs:Depends}, ${misc:Depends}, python, jupyter-notebook, jupyter-nbextension-jupyter-js-widgets
+Description: Jupyter Notebook on Kano OS
