@@ -1,0 +1,32 @@
+#!/usr/bin/python
+#
+#  kano-jupyter
+#
+#  License: http://www.gnu.org/licenses/gpl-2.0.txt GNU General Public License v2
+#
+#  Start and stop jupyter-notebook along with the Browser, on Kano OS.
+#
+#  TODO: This is a PoC - Refactor code
+#
+
+import os
+import sys
+import thread
+
+
+def thr_start_jupyter(options=None):
+    # TODO: option will contain a default landing directory with provided content
+    os.system('jupyter-notebook')
+
+def start_browser():
+    os.system('chromium-browser')
+
+def stop_jupyter():
+    os.system('kill $(pidof -x jupyter-notebook)')
+
+
+if __name__ == '__main__':
+   thread.start_new_thread(thr_start_jupyter, () )
+   start_browser()
+   stop_jupyter()
+   sys.exit(0)
