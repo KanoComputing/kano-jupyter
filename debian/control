@@ -7,5 +7,12 @@ Build-Depends: debhelper (>=9.0.0)
 
 Package: kano-jupyter
 Architecture: all
-Depends: ${shlibs:Depends}, ${misc:Depends}, python3, jupyter-notebook, jupyter-nbextension-jupyter-js-widgets
+Depends: ${shlibs:Depends},
+   ${misc:Depends},
+   python3,
+   jupyter-notebook,
+   jupyter-nbextension-jupyter-js-widgets,
+   python-ipykernel,
+   python-opencv,
+   python-numpy
 Description: Jupyter Notebook on Kano OS
