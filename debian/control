@@ -14,5 +14,10 @@ Depends: ${shlibs:Depends},
    jupyter-nbextension-jupyter-js-widgets,
    python-ipykernel,
    python-opencv,
-   python-numpy
+   python-numpy,
+   python-nltk,
+   python3-nltk,
+   python-bs4,
+   python3-bs4,
+   python-matplotlib
 Description: Jupyter Notebook on Kano OS
