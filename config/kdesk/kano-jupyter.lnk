@@ -1,7 +1,7 @@
 table Icon
   Caption:
   AppID: kano-jupyter
-  Command: /usr/bin/kano-jupyter
+  Command: /usr/bin/kano-jupyter run --notebook=Welcome.ipynb
   Singleton: true
   Icon: /usr/share/kano-jupyter/icons/jupyter-notebook.png
   IconHover: /usr/share/kano-desktop/icons/internet-hover.png
