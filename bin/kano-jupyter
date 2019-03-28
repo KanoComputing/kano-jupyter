@@ -11,22 +11,40 @@
 
 import os
 import sys
+import time
 import thread
 
 
-def thr_start_jupyter(options=None):
-    # TODO: option will contain a default landing directory with provided content
-    os.system('jupyter-notebook')
 
-def start_browser():
-    os.system('chromium-browser')
+def thr_start_jupyter(notebook_dir='$HOME/Kano-Jupyter'):
+    '''
+    Thread wich starts the Kano Jupyter Notebook web server in the background.
+    '''
+    os.system('jupyter-notebook --no-browser --notebook-dir="{}"'.format(notebook_dir))
+
+def start_browser(url=None, startup_delay=0):
+    '''
+    Starts default browser at optional given url, with optional startup delay in seconds.
+    '''
+    if startup_delay:
+        time.sleep(startup_delay)
+
+    os.system('chromium-browser --start-maximized "{}"'.format(url))
 
 def stop_jupyter():
+    '''
+    Stops the Jupyter Notebook Web Server
+    '''
     os.system('kill $(pidof -x jupyter-notebook)')
 
 
 if __name__ == '__main__':
-   thread.start_new_thread(thr_start_jupyter, () )
-   start_browser()
-   stop_jupyter()
-   sys.exit(0)
+
+    # TODO: python-docopt it, and extract parameters below
+    welcome_notebook = 'Welcome.ipynb'
+    chromium_delay = 3
+
+    thread.start_new_thread(thr_start_jupyter, () )
+    start_browser(url='http://localhost:8888/notebooks/{}'.format(welcome_notebook), startup_delay=chromium_delay)
+    stop_jupyter()
+    sys.exit(0)
