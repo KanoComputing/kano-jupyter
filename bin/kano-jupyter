@@ -9,18 +9,39 @@
 #  TODO: This is a PoC - Refactor code
 #
 
+"""
+Kano Jupyter Notebook startup program
+
+Usage:
+  kano-jupyter run --notebook=<nfile> [--directory=<directory>] [--url=<weburl>] [--delay=<secs>]
+  kano-jupyter status
+  kano-jupyter synchronize [--verbose]
+
+Options:
+  -n, --notebook=<nfile>     Name of Notebook file to load at startup
+  -d, --directory=<sandbox>  Sandboxed tree directory where Jupyter will load documents from
+  -u, --url=<weburl>         Use an alternative URL to connect to Jupyter Web server
+  -d, --delay=<secs>         Delay in seconds to synchronize Chromium and Jupyter web server
+  -v, --verbose              Explain synchronization tasks as they come through
+
+"""
+
 import os
 import sys
 import time
 import thread
+import docopt
+
+default_jupyter_url = 'http://localhost:8888/notebooks/'
+default_jupyter_dir = '$HOME/Kano-Jupyter'
+default_chromium_delay = 5
 
 
-
-def thr_start_jupyter(notebook_dir='$HOME/Kano-Jupyter'):
+def thr_start_jupyter(default_jupyter_directory):
     '''
     Thread wich starts the Kano Jupyter Notebook web server in the background.
     '''
-    os.system('jupyter-notebook --no-browser --notebook-dir="{}"'.format(notebook_dir))
+    os.system('jupyter-notebook --no-browser --notebook-dir="{}"'.format(default_jupyter_directory))
 
 def start_browser(url=None, startup_delay=0):
     '''
@@ -40,11 +61,11 @@ def stop_jupyter():
 
 if __name__ == '__main__':
 
-    # TODO: python-docopt it, and extract parameters below
-    welcome_notebook = 'Welcome.ipynb'
-    chromium_delay = 3
+    args = docopt.docopt(__doc__)
+    print args
 
-    thread.start_new_thread(thr_start_jupyter, () )
-    start_browser(url='http://localhost:8888/notebooks/{}'.format(welcome_notebook), startup_delay=chromium_delay)
+    thread.start_new_thread(thr_start_jupyter, (args['--directory'] or default_jupyter_dir,) )
+    start_browser(url = args['--url'] or default_jupyter_url + '{}'.format(args['--notebook']),
+                  startup_delay = int(args['--delay']) or default_chromium_delay)
     stop_jupyter()
     sys.exit(0)
