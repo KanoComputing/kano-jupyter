@@ -1,11 +1,5 @@
-kano-jupyter (1.0-1) unstable; urgency=low
+kano-jupyter (4.3.0-0) unstable; urgency=low
 
-  * Added Python2 Kernel and a sample Python Opencv notebook
+  * Added initial Jupyter Notebook integration for Kano OS
 
- -- Team Kano <dev@kano.me>  Wed, 27 Mar 2019 17:26:00 +0100
-
-kano-jupyter (1.0-1) unstable; urgency=low
-
-  * Added initial PoC integration on Kano OS
-
- -- Team Kano <dev@kano.me>  Thu, 14 Mar 2019 16:09:00 +0100
+ -- Team Kano <dev@kano.me>  Thu, 28 Mar 2019 16:09:00 +0100
