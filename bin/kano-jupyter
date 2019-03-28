@@ -33,7 +33,8 @@ import thread
 import docopt
 
 default_jupyter_url = 'http://localhost:8888/notebooks/'
-default_jupyter_dir = '$HOME/Kano-Jupyter'
+kano_jupyter_samples = '/usr/share/kano-jupyter/notebooks'
+kano_jupyter_samples_user = '$HOME/Kano-Jupyter'
 default_chromium_delay = 5
 
 
@@ -42,6 +43,7 @@ def thr_start_jupyter(default_jupyter_directory):
     Thread wich starts the Kano Jupyter Notebook web server in the background.
     '''
     os.system('jupyter-notebook --no-browser --notebook-dir="{}"'.format(default_jupyter_directory))
+
 
 def start_browser(url=None, startup_delay=0):
     '''
@@ -52,6 +54,7 @@ def start_browser(url=None, startup_delay=0):
 
     os.system('chromium-browser --start-maximized "{}"'.format(url))
 
+
 def stop_jupyter():
     '''
     Stops the Jupyter Notebook Web Server
@@ -59,13 +62,45 @@ def stop_jupyter():
     os.system('kill $(pidof -x jupyter-notebook)')
 
 
+def jupyter_status():
+    '''
+    Convenience function to learn wether Kano Jupyter is running
+    '''
+    return os.popen('ps aux | grep jupyter-notebook').read()
+
+
+def jupyter_synchronize(verbose = True, src = kano_jupyter_samples, trg = kano_jupyter_samples_user):
+    '''
+    Synchronize Kano Jupyter distributed samples from the Debian Package
+    into current user Home Directory, for personal editing.
+    '''
+    rsync_command = os.popen('rsync -rvt --update {}/* {}'.format(src, trg)).read()
+    if verbose:
+        return rsync_command
+    else:
+        return None
+
+
+
 if __name__ == '__main__':
 
     args = docopt.docopt(__doc__)
     print args
 
-    thread.start_new_thread(thr_start_jupyter, (args['--directory'] or default_jupyter_dir,) )
-    start_browser(url = args['--url'] or default_jupyter_url + '{}'.format(args['--notebook']),
-                  startup_delay = int(args['--delay']) or default_chromium_delay)
-    stop_jupyter()
-    sys.exit(0)
+    if args['run']:
+        thread.start_new_thread(thr_start_jupyter, (args['--directory'] or kano_jupyter_samples_user,) )
+        jupyter_synchronize(verbose=True)
+        start_browser(url = args['--url'] or default_jupyter_url + '{}'.format(args['--notebook']),
+                      startup_delay = args['--delay'] or default_chromium_delay)
+        stop_jupyter()
+        sys.exit(0)
+
+    elif args['status']:
+
+        print jupyter_status()
+        sys.exit(0)
+
+    elif args['synchronize']:
+
+        print jupyter_synchronize(verbose=args['--verbose'])
+        sys.exit(0)
