@@ -85,7 +85,6 @@ def jupyter_synchronize(verbose = True, src = kano_jupyter_samples, trg = kano_j
 if __name__ == '__main__':
 
     args = docopt.docopt(__doc__)
-    print args
 
     if args['run']:
         thread.start_new_thread(thr_start_jupyter, (args['--directory'] or kano_jupyter_samples_user,) )
