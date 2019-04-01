@@ -8,6 +8,6 @@
     "categories": ["code"],
     "packages": [],
     "dependencies": ["kano-jupyter", "kano-profile"],
-    "launch_command": "kano-tracker-ctl session run 'kano-jupyter' 'kano-jupyter run --notebook=opencv/1_Getting_Started.ipynb'",
-    "priority": 0
+    "launch_command": "kano-tracker-ctl session run 'kano-jupyter-vision' 'kano-jupyter run --notebook=opencv/1_Getting_Started.ipynb'",
+    "priority": 100
 }

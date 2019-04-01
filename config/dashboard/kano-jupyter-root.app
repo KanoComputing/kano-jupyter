@@ -8,6 +8,6 @@
     "categories": ["code"],
     "packages": [],
     "dependencies": ["kano-jupyter", "kano-profile"],
-    "launch_command": "kano-tracker-ctl session run 'kano-jupyter' 'kano-jupyter run --notebook=/'",
-    "priority": 0
+    "launch_command": "kano-tracker-ctl session run 'kano-jupyter-coding' 'kano-jupyter run --notebook=/'",
+    "priority": 120
 }
