@@ -87,6 +87,7 @@ if __name__ == '__main__':
     args = docopt.docopt(__doc__)
 
     if args['run']:
+        os.system('kdesk-hourglass-app "Chromium"')
         thread.start_new_thread(thr_start_jupyter, (args['--directory'] or kano_jupyter_samples_user,) )
         jupyter_synchronize(verbose=True)
         start_browser(url = args['--url'] or default_jupyter_url + '{}'.format(args['--notebook']),
