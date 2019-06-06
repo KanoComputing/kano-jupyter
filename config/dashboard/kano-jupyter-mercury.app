@@ -8,6 +8,6 @@
     "categories": ["code"],
     "packages": [],
     "dependencies": ["kano-jupyter", "kano-profile"],
-    "launch_command": "kano-tracker-ctl session run 'kano-jupyter-strings' 'kano-jupyter run --notebook=strings/Mercury-API.ipynb'",
+    "launch_command": "kano-tracker-ctl session run 'kano-jupyter-strings' 'kano-jupyter run --notebook=Mercury-API.ipynb'",
     "priority": 120
 }
