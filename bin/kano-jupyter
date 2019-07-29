@@ -1,13 +1,13 @@
 #!/usr/bin/python
+
+# kano-jupyter
 #
-#  kano-jupyter
+# Copyright (C) 2019 Kano Computing Ltd.
+# License: http://www.gnu.org/licenses/gpl-2.0.txt GNU GPL v2
 #
-#  License: http://www.gnu.org/licenses/gpl-2.0.txt GNU General Public License v2
+# Start and stop jupyter-notebook along with the Browser, on Kano OS.
 #
-#  Start and stop jupyter-notebook along with the Browser, on Kano OS.
-#
-#  TODO: This is a PoC - Refactor code
-#
+# TODO: This is a PoC - Refactor code
 
 """
 Kano Jupyter Notebook startup program
@@ -23,8 +23,8 @@ Options:
   -u, --url=<weburl>         Use an alternative URL to connect to Jupyter Web server
   -d, --delay=<secs>         Delay in seconds to synchronize Chromium and Jupyter web server
   -v, --verbose              Explain synchronization tasks as they come through
-
 """
+
 
 import os
 import sys
@@ -64,7 +64,7 @@ def stop_jupyter():
 
 def jupyter_status():
     '''
-    Convenience function to learn wether Kano Jupyter is running
+    Convenience function to learn whether Kano Jupyter is running
     '''
     return os.popen('ps aux | grep jupyter-notebook').read()
 

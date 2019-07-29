@@ -1,7 +1,4 @@
 bin/kano-jupyter /usr/bin
 notebooks /usr/share/kano-jupyter
-config/dashboard/kano-jupyter-root.app /usr/share/applications
-config/dashboard/kano-jupyter-strings.app /usr/share/applications
-config/dashboard/kano-jupyter-vision.app /usr/share/applications
-config/dashboard/kano-jupyter-mercury.app /usr/share/applications
-config/dashboard/icons/* /usr/share/icons/Kano/88x88/apps
+config/icon/*.app /usr/share/applications
+config/icon/*.png /usr/share/icons/Kano/88x88/apps
