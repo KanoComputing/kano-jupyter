@@ -74,7 +74,7 @@ def jupyter_synchronize(verbose = True, src = kano_jupyter_samples, trg = kano_j
     Synchronize Kano Jupyter distributed samples from the Debian Package
     into current user Home Directory, for personal editing.
     '''
-    rsync_command = os.popen('rsync -rvt --update {}/* {}'.format(src, trg)).read()
+    rsync_command = os.popen('rsync -rvt --update {}/* {}/'.format(src, trg)).read()
     if verbose:
         return rsync_command
     else:
@@ -88,8 +88,8 @@ if __name__ == '__main__':
 
     if args['run']:
         os.system('kdesk-hourglass-app "Chromium"')
-        thread.start_new_thread(thr_start_jupyter, (args['--directory'] or kano_jupyter_samples_user,) )
         jupyter_synchronize(verbose=True)
+        thread.start_new_thread(thr_start_jupyter, (args['--directory'] or kano_jupyter_samples_user,) )
         start_browser(url = args['--url'] or default_jupyter_url + '{}'.format(args['--notebook']),
                       startup_delay = args['--delay'] or default_chromium_delay)
         stop_jupyter()
