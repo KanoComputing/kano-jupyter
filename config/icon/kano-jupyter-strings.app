@@ -7,6 +7,7 @@
     "colour": "#4A5152",
     "categories": ["code"],
     "packages": [],
+    "hidden": true,
     "dependencies": ["kano-jupyter", "kano-profile"],
     "launch_command": "kano-tracker-ctl session run 'kano-jupyter-strings' 'kano-jupyter run --notebook=strings/Fun.ipynb'",
     "priority": 110
