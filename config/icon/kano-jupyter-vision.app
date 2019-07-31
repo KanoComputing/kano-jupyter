@@ -7,6 +7,7 @@
     "colour": "#4A5152",
     "categories": ["code"],
     "packages": [],
+    "hidden": true,
     "dependencies": ["kano-jupyter", "kano-profile"],
     "launch_command": "kano-tracker-ctl session run 'kano-jupyter-vision' 'kano-jupyter run --notebook=opencv/1_Getting_Started.ipynb'",
     "priority": 100
