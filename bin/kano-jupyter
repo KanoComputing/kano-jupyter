@@ -13,9 +13,10 @@
 Kano Jupyter Notebook startup program
 
 Usage:
-  kano-jupyter run --notebook=<nfile> [--directory=<directory>] [--url=<weburl>] [--delay=<secs>]
-  kano-jupyter status
+  kano-jupyter run --notebook=<nfile> [--directory=<directory>] [--url=<weburl>] [--delay=<secs>] [--verbose]
+  kano-jupyter status [--verbose]
   kano-jupyter synchronize [--verbose]
+  kano-jupyter -h | --help
 
 Options:
   -n, --notebook=<nfile>     Name of Notebook file to load at startup
@@ -23,6 +24,7 @@ Options:
   -u, --url=<weburl>         Use an alternative URL to connect to Jupyter Web server
   -d, --delay=<secs>         Delay in seconds to synchronize Chromium and Jupyter web server
   -v, --verbose              Explain synchronization tasks as they come through
+  -h, --help                 Show this message.
 """
 
 
@@ -36,6 +38,9 @@ default_jupyter_url = 'http://localhost:8888/notebooks/'
 kano_jupyter_samples = '/usr/share/kano-jupyter/notebooks'
 kano_jupyter_samples_user = '$HOME/Kano-Jupyter'
 default_chromium_delay = 5
+
+RC_SUCCESS = 0
+RC_INCORRECT_ARGS = 1
 
 
 def thr_start_jupyter(default_jupyter_directory):
@@ -62,45 +67,58 @@ def stop_jupyter():
     os.system('kill $(pidof -x jupyter-notebook)')
 
 
-def jupyter_status():
+def jupyter_status(verbose=True):
     '''
     Convenience function to learn whether Kano Jupyter is running
     '''
-    return os.popen('ps aux | grep jupyter-notebook').read()
+    output = os.popen('ps aux | grep jupyter-notebook').read()
+    if verbose:
+        print(output)
 
 
-def jupyter_synchronize(verbose = True, src = kano_jupyter_samples, trg = kano_jupyter_samples_user):
+def jupyter_synchronize(verbose=True, src=kano_jupyter_samples, trg=kano_jupyter_samples_user):
     '''
     Synchronize Kano Jupyter distributed samples from the Debian Package
     into current user Home Directory, for personal editing.
     '''
-    rsync_command = os.popen('rsync -rvt --update {}/* {}/'.format(src, trg)).read()
+    rsync_out = os.popen('rsync -rvt --update {}/* {}/'.format(src, trg)).read()
     if verbose:
-        return rsync_command
-    else:
-        return None
+        print(rsync_out)
 
+
+def main(args):
+    '''
+    Main entry point to the code.
+    '''
+    if args['run']:
+        os.system('kdesk-hourglass-app "Chromium"')
+        jupyter_synchronize(verbose=args['--verbose'])
+        thread.start_new_thread(
+            thr_start_jupyter,
+            (args['--directory'] or kano_jupyter_samples_user,)
+        )
+        start_browser(
+            url=args['--url'] or default_jupyter_url + '{}'.format(args['--notebook']),
+            startup_delay=args['--delay'] or default_chromium_delay
+        )
+        stop_jupyter()
+        return RC_SUCCESS
+
+    elif args['status']:
+        jupyter_status(verbose=args['--verbose'])
+        return RC_SUCCESS
+
+    elif args['synchronize']:
+        jupyter_synchronize(verbose=args['--verbose'])
+        return RC_SUCCESS
 
 
 if __name__ == '__main__':
+    # Show the entire docstring when incorrect arguments are given.
+    try:
+        args = docopt.docopt(__doc__)
+    except docopt.DocoptExit:
+        print(__doc__)
+        sys.exit(RC_INCORRECT_ARGS)
 
-    args = docopt.docopt(__doc__)
-
-    if args['run']:
-        os.system('kdesk-hourglass-app "Chromium"')
-        jupyter_synchronize(verbose=True)
-        thread.start_new_thread(thr_start_jupyter, (args['--directory'] or kano_jupyter_samples_user,) )
-        start_browser(url = args['--url'] or default_jupyter_url + '{}'.format(args['--notebook']),
-                      startup_delay = args['--delay'] or default_chromium_delay)
-        stop_jupyter()
-        sys.exit(0)
-
-    elif args['status']:
-
-        print jupyter_status()
-        sys.exit(0)
-
-    elif args['synchronize']:
-
-        print jupyter_synchronize(verbose=args['--verbose'])
-        sys.exit(0)
+    sys.exit(main(args) or RC_SUCCESS)
