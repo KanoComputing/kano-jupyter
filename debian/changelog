@@ -1,3 +1,10 @@
+kano-jupyter (4.3.4-0~iraq) unstable; urgency=low
+
+  * Added notebooks for Iraq program
+  * Added mechanism for adding new notebooks from /boot partition
+
+ -- Team Kano <dev@kano.me>  Wed, 26 Aug 2020 15:00:00 +0100
+
 kano-jupyter (4.3.0-0) unstable; urgency=low
 
   * Added initial Jupyter Notebook integration for Kano OS

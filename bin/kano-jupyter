@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python2
 
 # kano-jupyter
 #
@@ -13,7 +13,7 @@
 Kano Jupyter Notebook startup program
 
 Usage:
-  kano-jupyter run --notebook=<nfile> [--directory=<directory>] [--url=<weburl>] [--delay=<secs>] [--verbose]
+  kano-jupyter run [--notebook=<nfile>] [--directory=<directory>] [--url=<weburl>] [--delay=<secs>] [--verbose]
   kano-jupyter status [--verbose]
   kano-jupyter synchronize [--verbose]
   kano-jupyter -h | --help
@@ -35,8 +35,11 @@ import thread
 import docopt
 
 default_jupyter_url = 'http://localhost:8888/notebooks/'
-kano_jupyter_samples = '/usr/share/kano-jupyter/notebooks'
-kano_jupyter_samples_user = '$HOME/Kano-Jupyter'
+kano_jupyter_samples = [
+    '/usr/share/kano-jupyter/notebooks',
+    '/boot/notebooks'
+]
+kano_jupyter_samples_user = os.path.expanduser('~/Kano-Jupyter')
 default_chromium_delay = 5
 
 RC_SUCCESS = 0
@@ -76,12 +79,17 @@ def jupyter_status(verbose=True):
         print(output)
 
 
-def jupyter_synchronize(verbose=True, src=kano_jupyter_samples, trg=kano_jupyter_samples_user):
+def jupyter_synchronize(verbose=True, srcs=kano_jupyter_samples, trg=kano_jupyter_samples_user):
     '''
     Synchronize Kano Jupyter distributed samples from the Debian Package
     into current user Home Directory, for personal editing.
     '''
-    rsync_out = os.popen('rsync -rvt --update {}/* {}/'.format(src, trg)).read()
+    srcs = ['{}/*'.format(src) for src in srcs]
+    rsync_out = os.popen(
+        'rsync -rvt --update {src} {dst}/'.format(
+            src=' '.join(srcs),
+            dst=trg
+        )).read()
     if verbose:
         print(rsync_out)
 
@@ -97,8 +105,12 @@ def main(args):
             thr_start_jupyter,
             (args['--directory'] or kano_jupyter_samples_user,)
         )
+
+        path = args.get('--notebook') if args['--notebook'] else ''
+        url = '{}{}'.format(default_jupyter_url, path)
+
         start_browser(
-            url=args['--url'] or default_jupyter_url + '{}'.format(args['--notebook']),
+            url=args['--url'] or url,
             startup_delay=args['--delay'] or default_chromium_delay
         )
         stop_jupyter()
